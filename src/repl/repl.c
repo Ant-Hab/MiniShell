@@ -4,7 +4,7 @@
  * - Reads input
  * - Tokenizes using arena
  * - Expands variables (disabled for now)
- * - Parses commands using arena (disabled for now)
+ * - Parses commands using arena
  * - Executes commands (disabled for now)
  * - Loops until shell->running == false
  */
@@ -26,9 +26,17 @@ void repl_loop(t_shell *shell, t_arena **arena)
 		/* variable expansion (disabled until implemented) */
 		// expand_variables(tokens, shell);
 
-		/* parse tokens into commands (disabled until implemented) */
-		// commands = parse_tokens(tokens, arena);
-		// dbg_print_cmds(commands);
+		/* parse tokens into commands */
+		// call parser to build command structures from tokens
+		commands = parse_tokens(tokens, arena);
+		if (!commands && tokens)                 // parse failed (syntax or alloc)
+		{
+			// parsing error already printed by parse_tokens()
+			// continue loop; don't try to execute
+			(void)tokens;
+			continue;
+		}
+		dbg_print_cmds(commands);                // show parsed commands
 
 		/* execute commands (disabled until implemented) */
 		// execute_command(shell, commands);

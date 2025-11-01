@@ -7,10 +7,9 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdbool.h>
 # include <signal.h>
 # include <sys/types.h>
-// # include <sys/wait.h>
+# include <sys/wait.h>
 # include <fcntl.h>
 # include <dirent.h>
 # include <sys/stat.h>
@@ -20,95 +19,24 @@
 # include <readline/history.h>
 
 /* ===========================
-**        Libft
+**        Libft (types like t_list)
 ** =========================== */
 # include "libft.h"
 
 /* ===========================
-**        Arena Memory
+**        Minishell Types
 ** =========================== */
-typedef struct s_arena
-{
-	void			*memory_block; /* start of memory block */
-	size_t			buffer;        /* total size of memory block */
-	size_t			offset;        /* current offset in block */
-	struct s_arena	*next;         /* next arena chunk */
-}	t_arena;
+# include "minishell_types.h"
 
-# define GROWTH_FACTOR 2
-
-/* Arena core functions */
+/* ===========================
+**        Arena core functions
+** =========================== */
 void	*arena_alloc(t_arena **arena, size_t size);
 void	*arena_realloc(t_arena **arena, void *old_ptr, size_t old_size, size_t new_size);
 t_arena	*init_arena(size_t size);
 t_arena	*new_bigger_arena(t_arena *current_arena, size_t size);
 void	free_arena(t_arena **arena);
 char	*arena_strdup(t_arena **arena, const char *s);
-
-/* ===========================
-**        Structures
-** =========================== */
-typedef struct s_list	t_list;
-
-typedef struct s_env
-{
-	char			*key;          /* environment variable key */
-	char			*value;        /* environment variable value */
-	struct s_env	*next;         /* next env node */
-}	t_env;
-
-typedef struct s_shell
-{
-	t_env	*env;           /* environment variables linked list */
-	int		exit_code;      /* last exit code */
-	bool	running;        /* shell running flag */
-}	t_shell;
-
-/* ===========================
-**        Token types
-** =========================== */
-typedef enum e_token_type
-{
-	T_WORD,        /* normal word */
-	T_OPERATOR,    /* | < > << >> */
-	T_QUOTE        /* quoted string */
-}	t_token_type;
-
-typedef struct s_token
-{
-	char			*str;   /* token string */
-	t_token_type	type;   /* token type */
-}	t_token;
-
-/* ===========================
-**        Parser structures
-** =========================== */
-typedef enum e_redir_type
-{
-	R_INPUT,
-	R_OUTPUT,
-	R_APPEND,
-	R_HEREDOC
-}	t_redir_type;
-
-typedef struct s_redir
-{
-	t_redir_type	type;   /* type of redirection */
-	char			*target; /* file or heredoc target */
-	struct s_redir	*next; /* next redirection */
-}	t_redir;
-
-typedef struct s_cmd
-{
-	char			**argv; /* argument vector */
-	t_redir			*redirs; /* redirections */
-	struct s_cmd	*next;   /* next command */
-}	t_cmd;
-
-/* ===========================
-**        Global Variables
-** =========================== */
-extern int	g_signal; /* last received signal */
 
 /* ===========================
 **            Main
@@ -118,7 +46,7 @@ int		main(int argc, char **argv, char **envp);
 /* ===========================
 **            REPL
 ** =========================== */
-void 	repl_loop(t_shell *shell, t_arena **arena);
+void	repl_loop(t_shell *shell, t_arena **arena);
 char	*read_input(t_arena **arena);
 char	*read_heredoc(t_arena **arena, const char *delimiter);
 
@@ -154,9 +82,13 @@ void	free_tokens(t_list **tokens); /* optional, mostly for debug */
 ** =========================== */
 t_cmd	*parse_tokens(t_list *tokens, t_arena **arena);
 void	expand_variables(t_list *tokens, t_shell *shell);
+
+/* parser helpers (arena-based) */
 t_cmd	*create_cmd_node(t_arena **arena);
 int		add_word_to_argv(t_cmd *cmd, const char *word, t_arena **arena);
 int		add_redirection(t_cmd *cmd, t_redir_type type, const char *target, t_arena **arena);
+
+/* parser token helpers */
 int		is_pipe_token(const char *tok);
 int		is_redir_token(const char *tok);
 t_redir_type	get_redir_type(const char *tok);
@@ -187,4 +119,4 @@ void	dbg_print_tokens(t_list *tokens);
 void	dbg_print_cmds(t_cmd *cmds);
 void	dbg_print_exit_code(int exit_code);
 
-#endif
+#endif /* MINISHELL_H */
