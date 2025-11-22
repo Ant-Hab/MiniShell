@@ -49,7 +49,7 @@ int dup2(int oldfd, int newfd);
 
 static void	pipe_execution(t_cmd	*command, t_shell *shell);
 
-void	execution(char **cmd, char **env);
+// void	execution(char **cmd, char **env);
 
 void waitstatus(pid_t pid,  t_shell *shell);
 
@@ -86,15 +86,15 @@ static void init_fd(t_fd	*fd)
 
 static void close_fd(t_fd *fd)
 {
-	if (fd->fd[0] == -1)
+	if (fd->fd[0] >= -1)
 		close(fd->fd[0]);
-	if (fd->fd[1] == -1)
+	if (fd->fd[1] >= -1)
 		close(fd->fd[1]);
-	if (fd->prev_fd == -1)
+	if (fd->prev_fd >= -1)
 		close(fd->prev_fd);
-	if (fd->in_fd == -1)
+	if (fd->in_fd >= -1)
 		close(fd->in_fd);
-	if (fd->out_fd == -1)
+	if (fd->out_fd >= -1)
 		close(fd->out_fd);
 }
 

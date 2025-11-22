@@ -85,10 +85,21 @@ static void abs_path_execution(char **cmd, char **env)
     }
 }
 
+static void	notfound()
+{
+	// void(arr);
+	// freearray(arr);
+	errno = ENOENT;
+	// shell->exit_code = 127;
+
+	exit(EXIT_FAILURE);
+}
+
 static void relative_path_execution(char **cmd, char **env)
 {
     char *path;
 
+	
     if (!env)
     {
         printf("copying environment failed");
@@ -98,7 +109,7 @@ static void relative_path_execution(char **cmd, char **env)
         strerrornexit();
     path = pathtoexecute(cmd, env);
     if (path == NULL)
-        commandnotfound(cmd);
+        notfound();
     checking(path);
     if (execve(path, cmd, env) == -1)
     {
@@ -140,5 +151,5 @@ void	child_process(t_cmd *parsed_cmd, t_shell *shell)
 	}
 	else
 		perror("fork");
-	waitstatus(pid, shell);
+// waitstatus(pid, shell);
 }

@@ -32,6 +32,7 @@ typedef struct s_fd
 
 void execution_pipeline(t_cmd *command, t_shell *shell);
 // void pipeline(t_cmd	*command, t_shell *shell);
+void	execution(char **cmd, char **env);
 
 //pipeline_utils.c
 void applying_redir(t_redir *r, int *in_fd, int *out_fd);
