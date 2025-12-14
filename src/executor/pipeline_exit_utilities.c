@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-// src/executor/pipeline_exit_utilities.c
-
 void set_the_code_and_exit(t_shell *shell, t_exec *exec, int type)
 {
     // 1. Clean up temporary memory allocated in the path search or execve
@@ -44,7 +42,6 @@ void set_the_exit_code(t_shell *shell, char *command, char **envp)
 	ft_putstr_fd(": command not found (set the exit code)\n", 2);
     execution_cleanup(shell);
 	shell->exit_code = 127;
-	// exit(shell->exit_code);
 }
 
 void exit_after_execve(t_shell *shell, t_exec *exec)
@@ -57,18 +54,5 @@ void exit_after_execve(t_shell *shell, t_exec *exec)
         set_the_code_and_exit(shell, exec, GENERAL_ERROR);
 }
 
-// void cleanup_pipeline(t_shell *shell, char **envp, pid_t last_pid)
-// {
-//     // 1. Close any remaining file descriptors in the parent shell
-//     if (shell->fd != NULL)
-//         close_fd(shell->fd);
 
-//     // 2. Wait for the last process to finish and set the exit code
-//     if (last_pid > 0)
-//         waitstatus(last_pid, shell);
-
-//     // 3. Free the environment copy allocated at the start of the function (FIXES LEAK)
-//     if (envp != NULL)
-//         freearray(envp);
-// }
 

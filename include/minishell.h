@@ -48,6 +48,11 @@ void	arena_clear(t_arena **arena);
 
 int		main(int argc, char **argv, char **envp);
 
+//shell.c
+int  init_shell_and_arena(t_shell *shell, t_arena **arena, char **envp);
+//shell_cleanup.c
+void shell_cleanup(t_shell *shell);
+
 /* ===========================
 ** REPL
 ** =========================== */
