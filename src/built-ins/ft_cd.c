@@ -6,7 +6,7 @@
 /*   By: jtarvain <jtarvain@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 13:10:37 by jtarvain          #+#    #+#             */
-/*   Updated: 2025/12/18 13:10:38 by jtarvain         ###   ########.fr       */
+/*   Updated: 2025/12/18 16:19:16 by jtarvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static int	cd_av_error(char *oldpwd);
 static int	cd_error(char *oldpwd, int mode);
 static int	update_env(char *oldpwd, t_shell *shell);
+static void	add_oldpwd(char *oldpwd, t_shell *shell);
 
 int	ft_cd(t_cmd *cmds, t_shell *shell)
 {
@@ -56,7 +57,7 @@ static int	update_env(char *oldpwd, t_shell *shell)
 		if (oldpwd_node)
 			update_cd_node(oldpwd, oldpwd_node);
 		else
-			free(oldpwd);
+			add_oldpwd(oldpwd, shell);
 	}
 	if (newpwd)
 	{
@@ -87,4 +88,10 @@ static int	cd_av_error(char *oldpwd)
 	if (oldpwd)
 		free(oldpwd);
 	return (1);
+}
+
+static void	add_oldpwd(char *oldpwd, t_shell *shell)
+{
+	add_pwd("OLDPWD", shell, oldpwd);
+	free(oldpwd);
 }

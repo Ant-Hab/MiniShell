@@ -86,6 +86,7 @@ void	exec_sigquit(int sig);
 
 t_env	*init_env(char **envp);
 void	free_env(t_env *env);
+int		add_pwd(const char *str, t_shell *shell, char *oldpwd);
 
 /* ===========================
 ** Tokenizer

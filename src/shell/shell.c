@@ -12,7 +12,8 @@
 
 #include "minishell.h"
 
-static int	add_pwd(t_shell *shell);
+static void	add_to_end(t_shell *shell, t_env *node);
+static char	*determine_pwd(char *cwd, char *oldpwd);
 
 static int	init_exec_struct(t_shell *shell)
 {
@@ -44,7 +45,7 @@ int	init_shell_and_arena(t_shell *shell, t_arena **arena, char **envp)
 	}
 	shell->env = init_env(envp);
 	if (!shell->env)
-		if (!add_pwd(shell))
+		if (!add_pwd("PWD", shell, NULL))
 			return (free_arena(arena), 1);
 	if (init_exec_struct(shell) != 0)
 	{
@@ -55,7 +56,7 @@ int	init_shell_and_arena(t_shell *shell, t_arena **arena, char **envp)
 	return (0);
 }
 
-static int	add_pwd(t_shell *shell)
+int	add_pwd(const char *str, t_shell *shell, char *oldpwd)
 {
 	char	*pwd_value;
 	t_env	*new;
@@ -66,14 +67,37 @@ static int	add_pwd(t_shell *shell)
 	pwd_value = getcwd(NULL, 0);
 	if (!pwd_value)
 		return (free(new), 0);
-	new->key = ft_strdup("PWD");
+	new->key = ft_strdup(str);
 	if (!new->key)
 	{
 		free(pwd_value);
 		return (free(new), 0);
 	}
-	new->value = pwd_value;
+	new->value = determine_pwd(pwd_value, oldpwd);
 	new->next = NULL;
-	shell->env = new;
+	if (!shell->env)
+		shell->env = new;
+	else
+		add_to_end(shell, new);
 	return (1);
+}
+
+static void	add_to_end(t_shell *shell, t_env *node)
+{
+	t_env	*last;
+
+	last = shell->env;
+	while (last->next)
+		last = last->next;
+	last->next = node;
+}
+
+static char	*determine_pwd(char *cwd, char *oldpwd)
+{
+	char	*new;
+
+	if (!oldpwd)
+		return (cwd);
+	new = ft_strdup(oldpwd);
+	return (free(cwd), new);
 }

@@ -6,7 +6,7 @@
 /*   By: jtarvain <jtarvain@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 13:10:14 by jtarvain          #+#    #+#             */
-/*   Updated: 2025/12/18 13:10:16 by jtarvain         ###   ########.fr       */
+/*   Updated: 2025/12/18 15:23:41 by jtarvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,15 +93,3 @@ static size_t	env_strlen(const char *str)
 	}
 	return (i);
 }
-
-// void	free_env_node(t_env *node)
-// {
-// 	if (node)
-// 	{
-// 		if (node->value)
-// 			free(node->value);
-// 		if (node->key)
-// 			free(node->key);
-// 		free(node);
-// 	}
-// }
