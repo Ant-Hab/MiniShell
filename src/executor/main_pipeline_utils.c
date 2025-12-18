@@ -6,43 +6,11 @@
 /*   By: musajid <musajid@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 16:13:40 by musajid           #+#    #+#             */
-/*   Updated: 2025/12/18 16:48:51 by musajid          ###   ########.fr       */
+/*   Updated: 2025/12/18 17:03:46 by musajid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	pre_init(t_exec *exec)
-{
-	if (!exec)
-		return ;
-	if (exec->path_to_exec)
-	{
-		free(exec->path_to_exec);
-		exec->path_to_exec = NULL;
-	}
-	if (exec->envp)
-	{
-		freearray(exec->envp);
-		exec->envp = NULL;
-	}
-	exec->pid = -1;
-}
-
-void	clean_exec(t_exec *exec)
-{
-	if (exec->path_to_exec != NULL)
-	{
-		free(exec->path_to_exec);
-		exec->path_to_exec = NULL;
-	}
-	if (exec->envp != NULL)
-	{
-		freearray(exec->envp);
-		exec->envp = NULL;
-	}
-}
-
 
 static int	child_process_multiple_pipeline(t_exec *exec,
 			t_shell *shell, t_cmd *command)

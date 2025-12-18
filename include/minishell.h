@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mumar <mumar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: musajid <musajid@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 16:46:44 by mumar             #+#    #+#             */
-/*   Updated: 2024/05/18 16:51:56 by mumar            ###   ########.fr       */
+/*   Updated: 2025/12/18 17:16:12 by musajid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@
 
 # define BUFFER_SIZE_FOR_ARENA 1024
 # define FIELD_SEP 0x1F
+# define COMMAND_NOT_FOUND 127
+# define PERMISSION_DENIED 126
+# define EXECUTION_SUCESS 0
+# define GENERAL_ERROR 1
+# define ENV_PATH_COULDNT_BE_FOUND 2
+# define ENVIRONMENT_COPY_FAILED 3
+# define FORK_FAILED 4
 
 void	*arena_alloc(t_arena **arena, size_t size);
 void	*arena_realloc(t_arena **arena, void *old_ptr, size_t old_size,
@@ -90,7 +97,6 @@ int		handle_redir_token(t_list **tokens_ref, t_cmd **cur,
 			t_cmd **head, t_shell *shell);
 int		is_pipe_token(const char *tok);
 int		is_redir_token(const char *tok);
-t_redir_type	get_redir_type(const char *tok);
 
 char	*expand_string(const char *str, t_shell *shell, t_arena **arena);
 int		expand_command_argv(t_cmd *cmd, t_shell *shell, t_arena **arena);
@@ -131,14 +137,6 @@ void	dbg_print_tokens(t_list *tokens);
 void	dbg_print_cmds(t_cmd *cmds);
 void	dbg_print_exit_code(int exit_code);
 void	dbg_print_expanded_argv(t_cmd *cmd);
-
-# define COMMAND_NOT_FOUND 127
-# define PERMISSION_DENIED 126
-# define EXECUTION_SUCESS 0
-# define GENERAL_ERROR 1
-# define ENV_PATH_COULDNT_BE_FOUND 2
-# define ENVIRONMENT_COPY_FAILED 3
-# define FORK_FAILED 4
 
 void	execution_cleanup(t_shell *shell);
 void	set_the_code_and_exit(t_shell *shell, t_exec *exec, int type);

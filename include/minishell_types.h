@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_types.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mumar <mumar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: musajid <musajid@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 16:47:04 by mumar             #+#    #+#             */
-/*   Updated: 2024/05/18 16:52:16 by mumar            ###   ########.fr       */
+/*   Updated: 2025/12/18 17:19:32 by musajid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include <stddef.h>
 # include <stdbool.h>
+
+typedef struct s_list			t_list;
+extern volatile sig_atomic_t	g_signal;
 
 typedef struct s_fd
 {
@@ -42,8 +45,6 @@ typedef struct s_arena
 }					t_arena;
 
 # define GROWTH_FACTOR 2
-
-typedef struct s_list	t_list;
 
 typedef struct s_env
 {
@@ -142,6 +143,6 @@ typedef struct s_state
 	t_arena	**arena;
 }			t_state;
 
-extern volatile sig_atomic_t	g_signal;
+t_redir_type	get_redir_type(const char *tok);
 
 #endif
